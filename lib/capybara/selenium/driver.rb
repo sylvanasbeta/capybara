@@ -304,6 +304,11 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
   end
 
   # @api private
+  def safari?
+    browser_name == "safari"
+  end
+
+  # @api private
   def firefox?
     browser_name == "firefox"
   end

@@ -19,16 +19,16 @@ Capybara::SpecHelper.spec '#within_frame', requires: [:frames] do
 
   it "should find the text div in the main window after finding text in frameOne" do
     @session.within_frame("frameOne") do
-      expect(@session.find("//*[@id='divInFrameOne']").text).to eql 'This is the text of divInFrameOne'
+      expect(@session.find("//*[@id='divInFrameOne']").text).to match(/\s*This is the text of divInFrameOne\s*/)
     end
-    expect(@session.find("//*[@id='divInMainWindow']").text).to eql 'This is the text for divInMainWindow'
+    expect(@session.find("//*[@id='divInMainWindow']").text).to match(/\s*This is the text for divInMainWindow\s*/)
   end
 
   it "should find the text div in the main window after finding text in frameTwo" do
     @session.within_frame("frameTwo") do
-      expect(@session.find("//*[@id='divInFrameTwo']").text).to eql 'This is the text of divInFrameTwo'
+      expect(@session.find("//*[@id='divInFrameTwo']").text).to match(/\s*This is the text of divInFrameTwo\s*/)
     end
-    expect(@session.find("//*[@id='divInMainWindow']").text).to eql 'This is the text for divInMainWindow'
+    expect(@session.find("//*[@id='divInMainWindow']").text).to match(/\s*This is the text for divInMainWindow\s*/)
   end
 
   it "should return the result of executing the block" do

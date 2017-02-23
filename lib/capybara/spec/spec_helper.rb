@@ -141,6 +141,10 @@ module Capybara
     def ie?(session)
       session.respond_to?(:driver) && session.driver.respond_to?(:ie?, true) && session.driver.send(:ie?)
     end
+
+    def safari?(session)
+      session.respond_to?(:driver) && session.driver.respond_to?(:safari?, true) && session.driver.send(:safari?)
+    end
   end
 end
 

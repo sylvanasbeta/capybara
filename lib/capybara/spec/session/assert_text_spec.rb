@@ -48,7 +48,7 @@ Capybara::SpecHelper.spec '#assert_text' do
   it "should raise error with a helpful message if the requested text is present but with incorrect case" do
     @session.visit('/with_html')
     expect do
-      @session.assert_text('Text With   Whitespace')
+      @session.assert_text('This is a Test')
     end.to raise_error(Capybara::ExpectationNotMet, /it was found 1 time using a case insensitive search/)
   end
 

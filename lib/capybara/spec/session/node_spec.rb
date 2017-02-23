@@ -340,12 +340,14 @@ Capybara::SpecHelper.spec "node" do
     end
 
     it "should allow modifiers", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('/with_js')
       @session.find(:css, '#click-test').click(:shift)
       expect(@session).to have_link('Has been shift clicked')
     end
 
     it "should allow multiple modifiers", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('with_js')
       @session.find(:css, '#click-test').click(:control, :alt, :meta, :shift)
       # Selenium with Chrome on OSX ctrl-click generates a right click so just verify all keys but not click type
@@ -353,6 +355,7 @@ Capybara::SpecHelper.spec "node" do
     end
 
     it "should allow to adjust the click offset", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('with_js')
       @session.find(:css, '#click-test').click(x: 5, y: 5)
       link = @session.find(:link, 'has-been-clicked')
@@ -376,12 +379,14 @@ Capybara::SpecHelper.spec "node" do
     end
 
     it "should allow modifiers", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('/with_js')
       @session.find(:css, '#click-test').double_click(:alt)
       expect(@session).to have_link('Has been alt double clicked')
     end
 
     it "should allow to adjust the offset", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('with_js')
       @session.find(:css, '#click-test').double_click(x: 10, y: 5)
       link = @session.find(:link, 'has-been-double-clicked')
@@ -401,12 +406,14 @@ Capybara::SpecHelper.spec "node" do
     end
 
     it "should allow modifiers", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('/with_js')
       @session.find(:css, '#click-test').right_click(:meta)
       expect(@session).to have_link('Has been meta right clicked')
     end
 
     it "should allow to adjust the offset", requires: [:js] do
+      pending "Safari doesn't support modifiers on clicks" if safari?(@session)
       @session.visit('with_js')
       @session.find(:css, '#click-test').right_click(x: 10, y: 10)
       link = @session.find(:link, 'has-been-right-clicked')
@@ -434,6 +441,7 @@ Capybara::SpecHelper.spec "node" do
 
     it "should allow for multiple simultaneous keys" do
       pending "selenium-webdriver/geckodriver doesn't support complex sets of characters" if marionette?(@session)
+      pending "safari doesn't support multiple simultaneous characters" if safari?(@session)
       @session.visit('/form')
       @session.find(:css, '#address1_city').send_keys([:shift, 'o'], 'ceanside')
       expect(@session.find(:css, '#address1_city').value).to eq 'Oceanside'
@@ -441,8 +449,10 @@ Capybara::SpecHelper.spec "node" do
 
     it "should generate key events", requires: %i[send_keys js] do
       pending "selenium-webdriver/geckodriver doesn't support complex sets of characters" if marionette?(@session)
+      pending "safari doesn't support multiple simultaneous characters" if safari?(@session)
       @session.visit('/with_js')
-      @session.find(:css, '#with-key-events').send_keys([:shift, 't'], [:shift, 'w'])
+      with_key_events = @session.find(:css, '#with-key-events')
+      with_key_events.send_keys([:shift, 't'], [:shift, 'w'])
       expect(@session.find(:css, '#key-events-output')).to have_text('keydown:16 keydown:84 keydown:16 keydown:87')
     end
   end

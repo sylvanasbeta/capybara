@@ -368,7 +368,6 @@ module Capybara
         %(#<Capybara::Node::Element tag="#{base.tag_name}">)
       rescue => e
         raise unless session.driver.invalid_element_errors.any? { |et| e.is_a?(et) }
-
         %(Obsolete #<Capybara::Node::Element>)
       end
     end

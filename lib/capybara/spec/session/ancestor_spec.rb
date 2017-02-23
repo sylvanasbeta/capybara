@@ -17,7 +17,7 @@ Capybara::SpecHelper.spec '#ancestor' do
 
   it "should find the ancestor element using the given locator and options" do
     el = @session.find(:css, '#child')
-    expect(el.ancestor('//div', text: "Ancestor\nAncestor\nAncestor")[:id]).to eq('ancestor3')
+    expect(el.ancestor('//div', text: /Ancestor\s*Ancestor\s*Ancestor/)[:id]).to eq('ancestor3')
   end
 
   it "should raise an error if there are multiple matches" do

@@ -15,7 +15,14 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
   )
 
   def visible_text
-    native.text
+    if driver.safari?
+      ((visible? && self[:innerText]) || "").gsub(/\A[[:space:]&&[^\u00a0]]+/, "")
+                                            .gsub(/[[:space:]&&[^\u00a0]]+\z/, "")
+                                            .gsub(/\n+/, "\n")
+                                            .tr("\u00a0", ' ')
+    else
+      native.text
+    end
   end
 
   def all_text
@@ -29,6 +36,8 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
 
   def [](name)
     native.attribute(name.to_s)
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    raise
   rescue Selenium::WebDriver::Error::WebDriverError
     nil
   end
@@ -111,6 +120,11 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
       rescue # Swallow error if scrollIntoView with options isn't supported
       end
     end
+    # SafariDriver sends the wrong error type
+    if e.is_a?(Selenium::WebDriver::Error::WebDriverError) &&
+       e.message =~ /The element is obscured by another element and could not be clicked/
+       raise ::Selenium::WebDriver::Error::ElementClickInterceptedError, e.message
+    end
     raise e
   end
 
@@ -163,8 +177,8 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
   def disabled?
     return true unless native.enabled?
 
-    # workaround for selenium-webdriver/geckodriver reporting elements as enabled when they are nested in disabling elements
-    if driver.marionette?
+    # workaround for selenium-webdriver/geckodriver/safari-driver reporting elements as enabled when they are nested in disabling elements
+    if driver.marionette? || driver.safari?
       if %w[option optgroup].include? tag_name
         find_xpath("parent::*[self::optgroup or self::select]")[0].disabled?
       else
@@ -279,7 +293,7 @@ private
 
   def set_file(value) # rubocop:disable Naming/AccessorMethodName
     path_names = value.to_s.empty? ? [] : value
-    if driver.marionette?
+    if driver.marionette? || driver.safari?
       native.clear
       Array(path_names).each { |p| native.send_keys(p) }
     else

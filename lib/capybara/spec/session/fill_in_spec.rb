@@ -164,7 +164,12 @@ Capybara::SpecHelper.spec "#fill_in" do
       @session.visit('/with_js')
       @session.fill_in('with_change_event', with: 'some value')
       # click outside the field to trigger the change event
-      @session.find(:css, 'body').click
+      body = @session.find(:css, 'body')
+      if safari?(@session)
+        body.click(x: 400, y: 400) # safari claims overlap - maybe not clicking in middle of element by default?
+      else
+        body.click
+      end
       expect(@session.find(:css, '.change_event_triggered', match: :one)).to have_text 'some value'
     end
 

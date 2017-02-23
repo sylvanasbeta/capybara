@@ -26,7 +26,7 @@ Capybara::SpecHelper.spec '#switch_to_frame', requires: [:frames] do
     frame = @session.find(:frame, "frameOne")
     @session.switch_to_frame(frame)
     @session.switch_to_frame(:parent)
-    expect(@session.find("//*[@id='divInMainWindow']").text).to eql 'This is the text for divInMainWindow'
+    expect(@session.find("//*[@id='divInMainWindow']").text).to match(/\s*This is the text for divInMainWindow\s*/)
   end
 
   it "should be able to switch to nested frames" do
@@ -67,7 +67,7 @@ Capybara::SpecHelper.spec '#switch_to_frame', requires: [:frames] do
     frame = @session.find(:frame, "childFrame")
     @session.switch_to_frame frame
     @session.switch_to_frame :top
-    expect(@session.find("//*[@id='divInMainWindow']").text).to eql 'This is the text for divInMainWindow'
+    expect(@session.find("//*[@id='divInMainWindow']").text).to match(/\s*This is the text for divInMainWindow\s*/)
   end
 
   it "should raise error if switching to parent unmatched inside `within` as it's nonsense" do

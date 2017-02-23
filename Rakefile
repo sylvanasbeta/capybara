@@ -24,6 +24,11 @@ RSpec::Core::RakeTask.new(:spec_rack) do |t|
   t.pattern = './spec{,/*/**}/*{_spec.rb}'
 end
 
+RSpec::Core::RakeTask.new(:spec_safari) do |t|
+  t.rspec_opts = %w[--color]
+  t.pattern = './spec/*{_spec_safari.rb}'
+end
+
 task spec: [:spec_marionette]
 
 YARD::Rake::YardocTask.new do |t|
