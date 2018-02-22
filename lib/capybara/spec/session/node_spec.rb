@@ -259,6 +259,16 @@ Capybara::SpecHelper.spec "node" do
       element = @session.find(:link, 'Second Link')
       expect(@session.find(:xpath, element.path)).to eq(element)
     end
+
+    it "returns invalid element error when element disappear", requires: [:js] do
+      el = @session.find(:link, 'First Link')
+      @session.execute_script("arguments[0].parentNode.removeChild(arguments[0]);", el)
+      expect do
+        el.path
+      end.to raise_error do |error|
+        expect(error).to be_an_invalid_element_error(@session)
+      end
+    end
   end
 
   describe "#trigger", requires: [:js, :trigger] do

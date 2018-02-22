@@ -178,7 +178,9 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
       selector = node.tag_name
       if parent
         siblings = parent.find_xpath(node.tag_name)
-        selector += "[#{siblings.index(node) + 1}]" unless siblings.size == 1
+        idx = siblings.index(node)
+        raise ::Selenium::WebDriver::Error::StaleElementReferenceError if idx.nil?
+        selector += "[#{idx + 1}]" unless siblings.size == 1
       end
       result.push selector
     end
