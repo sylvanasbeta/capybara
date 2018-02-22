@@ -220,8 +220,11 @@ module Capybara
       end
 
       def describe_within?
-        @resolved_node && !(@resolved_node.is_a?(::Capybara::Node::Document) ||
-                            (@resolved_node.is_a?(::Capybara::Node::Simple) && @resolved_node.path == '/'))
+        case @resolved_node
+        when nil, ::Capybara::Node::Document then false
+        when ::Capybara::Node::Simple then !@resolved_node.document?
+        else true
+        end
       end
 
       def matches_text_filter(node, text_option)

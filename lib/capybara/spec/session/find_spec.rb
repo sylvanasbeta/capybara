@@ -420,6 +420,15 @@ Capybara::SpecHelper.spec '#find' do
       end
     end
 
+    it "should not find if not in the scope" do
+      expect(@session).to have_css('#another_foo')
+      @session.within(:xpath, "//div[@id='for_bar']") do
+        expect do
+          @session.find(:css, '#another_foo')
+        end.to raise_error Capybara::ElementNotFound, / within /
+      end
+    end
+
     it "should support pseudo selectors" do
       @session.within(:xpath, "//div[@id='for_bar']") do
         expect(@session.find(:css, 'input:disabled').value).to eq('James')

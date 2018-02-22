@@ -172,6 +172,11 @@ module Capybara
       def session_options
         Capybara.session_options
       end
+
+      # @api private
+      def document?
+        path == '/'
+      end
     end
   end
 end
