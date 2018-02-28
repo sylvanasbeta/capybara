@@ -27,6 +27,11 @@ Capybara::SpecHelper.spec '#visit' do
     expect(@session).to have_content('Hello world!')
   end
 
+  it "should fetch a response when destination has a target" do
+    @session.visit('/form#form_title')
+    expect(@session).to have_css('#form_title')
+  end
+
   it "raises any errors caught inside the server", requires: [:server] do
     quietly { @session.visit("/error") }
     expect do
