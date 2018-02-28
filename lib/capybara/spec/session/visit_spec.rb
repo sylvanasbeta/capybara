@@ -27,7 +27,9 @@ Capybara::SpecHelper.spec '#visit' do
     expect(@session).to have_content('Hello world!')
   end
 
-  it "should fetch a response when destination has a target" do
+  it "should fetch a response when sequentially visiting same destination but with a target" do
+    @session.visit('/form')
+    expect(@session).to have_css('#form_title')
     @session.visit('/form#form_title')
     expect(@session).to have_css('#form_title')
   end
