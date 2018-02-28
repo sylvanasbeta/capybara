@@ -125,6 +125,10 @@ module Capybara
       session.respond_to?(:driver) && session.driver.respond_to?(:chrome?, true) && session.driver.send(:chrome?)
     end
 
+    def chrome_lt?(version, session)
+      chrome?(session) && (session.driver.browser.capabilities[:version].to_f < version)
+    end
+
     def chrome_gte?(version, session)
       chrome?(session) && (session.driver.browser.capabilities[:version].to_f >= version)
     end
