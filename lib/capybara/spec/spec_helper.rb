@@ -120,6 +120,14 @@ module Capybara
     def marionette_gte?(version, session)
       marionette?(session) && (session.driver.browser.capabilities[:browser_version].to_f >= version)
     end
+
+    def chrome?(session)
+      session.respond_to?(:driver) && session.driver.respond_to?(:chrome?, true) && session.driver.send(:chrome?)
+    end
+
+    def chrome_gte?(version, session)
+      chrome?(session) && (session.driver.browser.capabilities[:version].to_f >= version)
+    end
   end
 end
 
