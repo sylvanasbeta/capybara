@@ -122,7 +122,7 @@ RSpec.describe Capybara::Selenium::Driver do
   context "#refresh" do
     def extract_results(session)
       expect(session).to have_xpath("//pre[@id='results']")
-      YAML.safe_load Nokogiri::HTML(session.body).xpath("//pre[@id='results']").first.inner_html.lstrip
+      YAML.load Nokogiri::HTML(session.body).xpath("//pre[@id='results']").first.inner_html.lstrip
     end
 
     it "can repost by accepting confirm" do

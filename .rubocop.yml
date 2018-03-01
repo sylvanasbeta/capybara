@@ -129,3 +129,8 @@ Layout/CaseIndentation:
 
 Layout/IndentArray:
   EnforcedStyle: consistent
+
+Security/YAMLLoad:
+  Exclude:
+    - 'lib/capybara/spec/**/*'
+    - 'spec/**/*'
