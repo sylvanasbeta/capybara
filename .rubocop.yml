@@ -2,7 +2,7 @@ AllCops:
   DisabledByDefault: false
   TargetRubyVersion: 2.2.2
   Exclude:
-      - 'spec/**/*'
+      # - 'spec/**/*'
       # - 'lib/capybara/spec/**/*'
       - 'capybara.gemspec'
 
@@ -15,6 +15,7 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   Exclude:
+    - 'spec/**/*'
     - 'lib/capybara/spec/**/*'
 
 Metrics/AbcSize:
@@ -110,6 +111,12 @@ Style/ModuleFunction:
 Style/NumericLiterals:
   Exclude:
     - 'lib/capybara/spec/**/*'
+    - 'spec/**/*'
+
+Style/MultilineIfModifier:
+  Exclude:
+    - 'lib/capybara/spec/**/*'
+    - 'spec/**/*'
 
 Layout/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
