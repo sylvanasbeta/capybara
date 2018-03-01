@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rspec"
 require "rspec/expectations"
 require "capybara"
@@ -85,7 +86,7 @@ module Capybara
         session = session.current_session if session.respond_to?(:current_session)
         session.instance_variable_set(:@config, nil) if session
       end
-    end # class << self
+    end
 
     def silence_stream(stream)
       old_stream = stream.dup
@@ -106,7 +107,7 @@ module Capybara
 
     def extract_results(session)
       expect(session).to have_xpath("//pre[@id='results']")
-      YAML.load Nokogiri::HTML(session.body).xpath("//pre[@id='results']").first.inner_html.lstrip
+      YAML.safe_load Nokogiri::HTML(session.body).xpath("//pre[@id='results']").first.inner_html.lstrip
     end
 
     def marionette?(session)
