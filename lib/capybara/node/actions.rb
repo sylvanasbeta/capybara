@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'capybara/node/pluginify'
 
 module Capybara
   module Node
@@ -173,9 +174,13 @@ module Capybara
       # @option options [String] :from  The id, name or label of the select box
       #
       # @return [Capybara::Node::Element]  The option element selected
-      def select(value = nil, from: nil, **options)
-        scope = from ? find(:select, from, options) : self
-        scope.find(:option, value, options).select_option
+      def select(value = nil, from: nil, using: nil, **options)
+        if using
+          Capybara.plugins[using].select(self, value, from: from, **options)
+        else
+          scope = from ? find(:select, from, options) : self
+          scope.find(:option, value, options).select_option
+        end
       end
 
       ##
@@ -231,6 +236,7 @@ module Capybara
         end
       end
 
+      prepend ::Capybara::Node::Pluginify
     private
 
       def while_visible(element, visible_css)
