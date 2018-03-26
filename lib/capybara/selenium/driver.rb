@@ -109,8 +109,10 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
     # Use instance variable directly so we avoid starting the browser just to reset the session
     return unless @browser
 
-    switch_to_window(window_handles.first)
-    window_handles.slice(1..-1).each { |win| close_window(win) }
+    if chrome? || firefox?
+      switch_to_window(window_handles.first)
+      window_handles.slice(1..-1).each { |win| close_window(win) }
+    end
 
     navigated = false
     start_time = Capybara::Helpers.monotonic_time
@@ -294,6 +296,11 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
   # @api private
   def edge?
     browser_name == "edge"
+  end
+
+  # @api private
+  def ie?
+    browser_name == "ie"
   end
 
 private
