@@ -171,6 +171,7 @@ Capybara::SpecHelper.spec '#click_button' do
 
   context "with fields associated with the form using the form attribute" do
     before do
+      pending "IE doesn't support the HTML5 'form' attribute" if ie?(@session)
       @session.click_button('submit_form1')
       @results = extract_results(@session)
     end
@@ -194,6 +195,7 @@ Capybara::SpecHelper.spec '#click_button' do
 
   context "with submit button outside the form defined by <button> tag" do
     before do
+      pending "IE doesn't support the HTML5 'form' attribute" if ie?(@session)
       @session.click_button('outside_button')
       @results = extract_results(@session)
     end
@@ -210,6 +212,7 @@ Capybara::SpecHelper.spec '#click_button' do
 
   context "with submit button outside the form defined by <input type='submit'> tag" do
     before do
+      pending "IE doesn't support the HTML5 'form' attribute" if ie?(@session)
       @session.click_button('outside_submit')
       @results = extract_results(@session)
     end
@@ -226,6 +229,7 @@ Capybara::SpecHelper.spec '#click_button' do
 
   context "with submit button for form1 located within form2" do
     it "should submit the form associated with the button" do
+      pending "IE doesn't support the HTML5 'form' attribute" if ie?(@session)
       @session.click_button('other_form_button')
       expect(extract_results(@session)['which_form']).to eq("form1")
     end
