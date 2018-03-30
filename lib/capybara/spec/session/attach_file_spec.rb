@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Capybara::SpecHelper.spec "#attach_file" do
+Capybara::SpecHelper.spec "#attach_file", :focus_ do
   before do
     @test_file_path = File.expand_path('../fixtures/test_file.txt', File.dirname(__FILE__))
     @another_test_file_path = File.expand_path('../fixtures/another_test_file.txt', File.dirname(__FILE__))
@@ -180,7 +180,7 @@ Capybara::SpecHelper.spec "#attach_file" do
     it "raises an error if the file input isn't triggered" do
       expect do
         @session.attach_file("triggered_file", with_os_path_separators(__FILE__)) do
-        # do nothing
+          # do nothing
         end
       end.to raise_error(::Capybara::ExpectationNotMet, "Block did not trigger file selection")
     end

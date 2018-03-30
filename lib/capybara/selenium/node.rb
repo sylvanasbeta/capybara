@@ -80,6 +80,44 @@ class Capybara::Selenium::Node < Capybara::Driver::Node
     end
   end
 
+  def attach_file(paths)
+    if block_given?
+      driver.execute_script("document.addEventListener('click', function click_detect(evt){
+        if (evt.target.type === 'file') {
+          document.removeEventListener('click', click_detect);
+          evt.preventDefault();
+          evt.target.setAttribute('data-capybara-clicked', 'true');
+        }
+      })")
+      yield
+      if self[:'data-capybara-clicked'] == 'true'
+        if driver.marionette?
+          driver.execute_script("(function(el, css){
+            el.selenium_style_cache = el.style.cssText;
+            for (var prop in css){
+              if (css.hasOwnProperty(prop)) {
+                el.style[prop] = css[prop]
+              }
+            }
+          })(arguments[0], arguments[1])", self, opacity: 1, display: 'block', visibility: 'visible')
+          set(paths)
+          driver.execute_script("(function(el){
+            if (el.hasOwnProperty('selenium_style_cache')) {
+              el.style.cssText = el.selenium_style_cache;
+              delete el.selenium_style_cache;
+            }
+          })(arguments[0])", self)
+        else
+          set_file(paths)
+        end
+      else
+        raise ::Capybara::ExpectationNotMet, "Block did not trigger file selection"
+      end
+    else
+      set_file(paths)
+    end
+  end
+
   def select_option
     native.click unless selected? || disabled?
   end

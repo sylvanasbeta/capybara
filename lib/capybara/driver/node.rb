@@ -32,6 +32,10 @@ module Capybara
         raise NotImplementedError
       end
 
+      def attach_file(value, **options, &trigger_block)
+        raise NotImplementedError
+      end
+
       def select_option
         raise NotImplementedError
       end

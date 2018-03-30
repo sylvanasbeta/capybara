@@ -218,31 +218,35 @@ module Capybara
       # @option options [true, Hash] make_visible   A Hash of CSS styles to change before attempting to attach the file, if `true` { opacity: 1, display: 'block', visibility: 'visible' } is used (may not be supported by all drivers)
       #
       # @return [Capybara::Node::Element]  The file field element
-      def attach_file(locator = nil, path, make_visible: nil, **options) # rubocop:disable Style/OptionalArguments
+      def attach_file(locator = nil, path, make_visible: nil, **options, &trigger_block) # rubocop:disable Style/OptionalArguments
         Array(path).each do |p|
           raise Capybara::FileNotFound, "cannot attach file, #{p} does not exist" unless File.exist?(p.to_s)
         end
+
         if block_given?
           ff = find(:file_field, locator, options.merge(visible: :all))
-          session.execute_script("document.addEventListener('click', function click_detect(evt){
-            if (evt.target.type === 'file') {
-              document.removeEventListener('click', click_detect);
-              evt.preventDefault();
-              evt.target.setAttribute('data-capybara-clicked', 'true');
-            }
-          })")
-          yield
-          if ff.matches_css?("[data-capybara-clicked='true']")
-            while_visible(ff, make_visible || true) { |el| el.set(path) }
+          if make_visible
+            while_visible(ff, make_visible) { ff.base.attach_file(path, &trigger_block) }
           else
-            raise ::Capybara::ExpectationNotMet, "Block did not trigger file selection"
+            ff.base.attach_file(path, &trigger_block)
           end
         elsif make_visible
           # Allow user to update the CSS style of the file input since they are so often hidden on a page
           ff = find(:file_field, locator, options.merge(visible: :all))
-          while_visible(ff, make_visible) { |el| el.set(path) }
+          while_visible(ff, make_visible) do |el|
+            begin
+              el.base.attach_file(path)
+            rescue NotImplementedError
+              el.set(path)
+            end
+          end
         else
-          find(:file_field, locator, options).set(path)
+          ff = find(:file_field, locator, options)
+          begin
+            ff.base.attach_file(path)
+          rescue NotImplementedError
+            ff.set(path)
+          end
         end
       end
 
