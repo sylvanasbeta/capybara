@@ -160,6 +160,32 @@ Capybara::SpecHelper.spec "#attach_file" do
     end
   end
 
+  context "with block", requires: %i[js es_args] do
+    it "sets the file" do
+      @session.attach_file("triggered_file", with_os_path_separators(__FILE__)) do
+        @session.click_button('upload_trigger')
+      end
+      @session.click_button('awesome')
+      expect(extract_results(@session)['triggered_file']).to eq(File.basename(__FILE__))
+    end
+
+    it "sets the file when label clicked" do
+      @session.attach_file("labelled_hidden_file", with_os_path_separators(__FILE__)) do
+        @session.find(:label, "Upload Labelled Hidden File").click
+      end
+      @session.click_button('awesome')
+      expect(extract_results(@session)['labelled_hidden_file']).to eq(File.basename(__FILE__))
+    end
+
+    it "raises an error if the file input isn't triggered" do
+      expect do
+        @session.attach_file("triggered_file", with_os_path_separators(__FILE__)) do
+        # do nothing
+        end
+      end.to raise_error(::Capybara::ExpectationNotMet, "Block did not trigger file selection")
+    end
+  end
+
   private
 
   def with_os_path_separators(path)

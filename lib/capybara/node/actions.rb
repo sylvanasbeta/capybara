@@ -222,8 +222,23 @@ module Capybara
         Array(path).each do |p|
           raise Capybara::FileNotFound, "cannot attach file, #{p} does not exist" unless File.exist?(p.to_s)
         end
-        # Allow user to update the CSS style of the file input since they are so often hidden on a page
-        if make_visible
+        if block_given?
+          ff = find(:file_field, locator, options.merge(visible: :all))
+          session.execute_script("document.addEventListener('click', function click_detect(evt){
+            if (evt.target.type === 'file') {
+              document.removeEventListener('click', click_detect);
+              evt.preventDefault();
+              evt.target.setAttribute('data-capybara-clicked', 'true');
+            }
+          })")
+          yield
+          if ff.matches_css?("[data-capybara-clicked='true']")
+            while_visible(ff, make_visible || true) { |el| el.set(path) }
+          else
+            raise ::Capybara::ExpectationNotMet, "Block did not trigger file selection"
+          end
+        elsif make_visible
+          # Allow user to update the CSS style of the file input since they are so often hidden on a page
           ff = find(:file_field, locator, options.merge(visible: :all))
           while_visible(ff, make_visible) { |el| el.set(path) }
         else

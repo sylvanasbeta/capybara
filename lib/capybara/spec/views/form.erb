@@ -89,6 +89,16 @@
   </p>
 
   <p>
+    <input type="button" id="upload_trigger" value="Upload Trigger" onclick="this.nextElementSibling.click()">
+    <input type="file" id="triggered_file" name="form[triggered_file]" style="opacity:0; display: none;">
+  </p>
+
+  <p>
+    <input type="file" id="labelled_hidden_file" name="form[labelled_hidden_file]" style="opacity:0; display: none;">
+    <label for="labelled_hidden_file">Upload Labelled Hidden File</label>
+  </p>
+
+  <p>
     <input type="hidden" name="form[token]" value="12345" id="form_token"/>
   </p>
 
@@ -446,13 +456,13 @@ New line after and before textarea tag
 </label>
 
 <form id="form1" action="/form" method="post">
-  <input type="text" name="form[which_form]" value="form1" id="form_which_form"/>
+  <input type="text" name="form[which_form]" value="form1" id="form_which_form1"/>
   <input type="text" name="form[for_form2]" value="for_form2" form="form2"/>
   <input type="submit" name="form[submit_form1]" value="submit_form1" id="submit_form1"/>
 </form>
 
 <form id="form2" action="/form" method="post">
-  <input type="text" name="form[which_form]" value="form2" id="form_which_form"/>
+  <input type="text" name="form[which_form]" value="form2" id="form_which_form2"/>
   <input type="submit" name="form[unused]" value="unused"/>
   <button type="submit" name="form[other_form_button]" value="other_form_button" form="form1">Form1</button>
 </form>
