@@ -37,6 +37,7 @@ module Capybara
       # @return [Boolean]                       If the expression exists
       #
       def has_selector?(*args, &optional_filter_block)
+        args = args_with_boolean_wait(*args)
         assert_selector(*args, &optional_filter_block)
       rescue Capybara::ExpectationNotMet
         false
@@ -51,6 +52,7 @@ module Capybara
       # @return [Boolean]
       #
       def has_no_selector?(*args, &optional_filter_block)
+        args = args_with_boolean_wait(*args)
         assert_no_selector(*args, &optional_filter_block)
       rescue Capybara::ExpectationNotMet
         false
@@ -506,6 +508,7 @@ module Capybara
       # @return [Boolean]
       #
       def matches_selector?(*args, &optional_filter_block)
+        args = args_with_boolean_wait(*args)
         assert_matches_selector(*args, &optional_filter_block)
       rescue Capybara::ExpectationNotMet
         return false
@@ -633,7 +636,7 @@ module Capybara
       # @return [Boolean]                            Whether it exists
       #
       def has_text?(*args)
-        assert_text(*args)
+        assert_text(*args_with_boolean_wait(args))
       rescue Capybara::ExpectationNotMet
         false
       end
@@ -647,7 +650,7 @@ module Capybara
       # @return [Boolean]  Whether it doesn't exist
       #
       def has_no_text?(*args)
-        assert_no_text(*args)
+        assert_no_text(*args_with_boolean_wait(args))
       rescue Capybara::ExpectationNotMet
         false
       end
@@ -692,6 +695,11 @@ module Capybara
       def _set_query_session_options(*query_args, **query_options)
         query_options[:session_options] = session_options
         query_args.push(query_options)
+      end
+
+      def args_with_boolean_wait(*args, **options)
+        options = {wait: false}.merge(options) unless session_options.boolean_wait
+        args.push(options)
       end
     end
   end

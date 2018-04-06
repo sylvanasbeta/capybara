@@ -7,7 +7,7 @@ module Capybara
   class Config
     extend Forwardable
 
-    OPTIONS = %i[app reuse_server threadsafe default_wait_time server default_driver javascript_driver].freeze
+    OPTIONS = %i[app reuse_server threadsafe default_wait_time boolean_wait server default_driver javascript_driver].freeze
 
     attr_accessor :app
     attr_reader :reuse_server, :threadsafe

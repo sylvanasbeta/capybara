@@ -467,6 +467,7 @@ Capybara.configure do |config|
   config.server = :default
   config.default_selector = :css
   config.default_max_wait_time = 2
+  config.boolean_wait = true
   config.ignore_hidden_elements = true
   config.default_host = "http://www.example.com"
   config.automatic_reload = true
