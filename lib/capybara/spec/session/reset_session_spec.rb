@@ -50,6 +50,7 @@ Capybara::SpecHelper.spec '#reset_session!' do
   it "handles already open modals", requires: [:modals] do
     @session.visit('/with_unload_alert')
     @session.click_link('Go away')
+    sleep 1 # time for unload modal to open
     expect { @session.reset_session! }.not_to raise_error
     expect(@session).to have_no_selector :xpath, "/html/body/*", wait: false
   end
