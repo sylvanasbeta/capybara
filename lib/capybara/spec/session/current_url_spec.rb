@@ -3,7 +3,7 @@
 require "capybara/spec/test_app"
 
 Capybara::SpecHelper.spec '#current_url, #current_path, #current_host' do
-  before :all do
+  before :all do # rubocop:disable RSpec/BeforeAfterAll
     @servers = Array.new(2) { Capybara::Server.new(TestApp.new).boot }
     # sanity check
     expect(@servers[0].port).not_to eq(@servers[1].port)
@@ -100,7 +100,7 @@ Capybara::SpecHelper.spec '#current_url, #current_path, #current_host' do
 
   it "doesn't raise exception on a nil current_url" do
     skip "Only makes sense when there is a real driver" unless @session.respond_to?(:driver)
-    allow(@session.driver).to receive(:current_url) { nil }
+    allow(@session.driver).to receive(:current_url).and_return(nil)
     @session.visit("/")
     expect { @session.current_url }.not_to raise_exception
     expect { @session.current_path }.not_to raise_exception

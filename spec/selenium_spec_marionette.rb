@@ -57,7 +57,7 @@ RSpec.describe Capybara::Selenium::Driver do
 
   describe '#quit' do
     it "should reset browser when quit" do
-      expect(@driver.browser).to be
+      expect(@driver.browser).to be_truthy
       @driver.quit
       # access instance variable directly so we don't create a new browser instance
       expect(@driver.instance_variable_get(:@browser)).to be_nil

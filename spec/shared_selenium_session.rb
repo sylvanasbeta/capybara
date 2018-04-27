@@ -172,9 +172,7 @@ RSpec.shared_examples "Capybara::Session" do |session, mode|
       it "can return arrays of nested elements" do
         @session.visit('/form')
         elements = @session.evaluate_script('document.querySelectorAll("#form_city option")')
-        elements.each do |el|
-          expect(el).to be_instance_of Capybara::Node::Element
-        end
+        expect(elements).to all(be_instance_of Capybara::Node::Element)
         expect(elements).to eq @session.find(:css, '#form_city').all(:css, 'option').to_a
       end
 
@@ -206,8 +204,9 @@ RSpec.shared_examples "Capybara::Session" do |session, mode|
         @session.visit('/form')
         el = @session.find(:button, 'Click me!').click
         expect(@session).to have_no_button('Click me!')
-        expect(el).not_to receive(:synchronize)
+        allow(el).to receive(:synchronize)
         expect(el.inspect).to eq "Obsolete #<Capybara::Node::Element>"
+        expect(el).not_to have_received(:synchronize)
       end
     end
 

@@ -360,7 +360,7 @@ private
       if response_text.nil?
         "default_text"
       else
-        "'#{response_text.gsub("\\", "\\\\\\").gsub("'", "\\\\'")}'"
+        "'#{response_text.gsub('\\', '\\\\\\').gsub("'", "\\\\'")}'"
       end
     else
       'null'

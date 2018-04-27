@@ -28,9 +28,8 @@ RSpec.describe Capybara do
 
   describe '.register_server' do
     it "should add a new server" do
-      handler = double("handler")
       Capybara.register_server :blob do |_app, _port, _host|
-        handler.run
+        # do nothing
       end
 
       expect(Capybara.servers).to have_key(:blob)
@@ -43,9 +42,10 @@ RSpec.describe Capybara do
     end
 
     it "should default to a proc that calls run_default_server" do
-      mock_app = double('app')
-      expect(Capybara).to receive(:run_default_server).with(mock_app, 8000)
+      mock_app = Object.new
+      allow(Capybara).to receive(:run_default_server)
       Capybara.server.call(mock_app, 8000)
+      expect(Capybara).to have_received(:run_default_server).with(mock_app, 8000)
     end
 
     it "should return a custom server proc" do

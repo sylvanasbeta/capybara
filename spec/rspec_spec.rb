@@ -51,7 +51,8 @@ RSpec.describe 'capybara/rspec', type: :feature do
 
     it "allows access to the RSpec matcher" do
       visit('/with_html')
-      expect(%w[test1 test2]).to all(be_a(String))
+      strings = %w[test1 test2]
+      expect(strings).to all(be_a(String))
     end
   end
 
@@ -90,7 +91,8 @@ RSpec.describe 'capybara/rspec', type: :other do
 
       it "allows access to the RSpec matcher" do
         @test_class_instance.visit('/with_html')
-        expect(%w[test1 test2]).to @test_class_instance.all(be_a(String))
+        strings = %w[test1 test2]
+        expect(strings).to @test_class_instance.all(be_a(String))
       end
     end
 

@@ -49,9 +49,10 @@ module Capybara
 
       def run_specs(session, name, **options)
         specs = @specs
-        RSpec.describe Capybara::Session, name, options do
+        RSpec.describe Capybara::Session, name, options do # rubocop:disable RSpec/EmptyExampleGroup
           include Capybara::SpecHelper
           include Capybara::RSpecMatchers
+          # rubocop:disable RSpec/ScatteredSetup
           before do
             @session = session
           end
@@ -71,9 +72,10 @@ module Capybara
           before :each, :exact_false do
             Capybara.exact = false
           end
+          # rubocop:enable RSpec/ScatteredSetup
 
           specs.each do |spec_name, spec_options, block|
-            describe spec_name, *spec_options do
+            describe spec_name, *spec_options do # rubocop:disable RSpec/EmptyExampleGroup
               class_eval(&block)
             end
           end
