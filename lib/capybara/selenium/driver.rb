@@ -32,8 +32,8 @@ class Capybara::Selenium::Driver < Capybara::Driver::Base
 
   def browser
     unless @browser
-      options[:desired_capabilities] ||= {}
-      options[:desired_capabilities][:unexpectedAlertBehaviour] = "ignore"
+      # options[:desired_capabilities] ||= {}
+      # options[:desired_capabilities][:unexpectedAlertBehaviour] = "ignore"
 
       @processed_options = options.reject { |key, _val| SPECIAL_OPTIONS.include?(key) }
       @browser = Selenium::WebDriver.for(options[:browser], @processed_options)
