@@ -65,7 +65,7 @@ RSpec.describe Capybara::DSL do
 
   describe '#using_driver' do
     before do
-      expect(Capybara.current_driver).not_to eq(:selenium)
+      expect(Capybara.current_driver).not_to eq(:selenium) # rubocop:disable RSpec/ExpectInHook
     end
 
     it 'should set the driver using Capybara.current_driver=' do

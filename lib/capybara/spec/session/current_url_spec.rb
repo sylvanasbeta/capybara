@@ -6,8 +6,8 @@ Capybara::SpecHelper.spec '#current_url, #current_path, #current_host' do
   before :all do # rubocop:disable RSpec/BeforeAfterAll
     @servers = Array.new(2) { Capybara::Server.new(TestApp.new).boot }
     # sanity check
-    expect(@servers[0].port).not_to eq(@servers[1].port)
-    expect(@servers.map(&:port)).not_to include 80
+    expect(@servers[0].port).not_to eq(@servers[1].port) # rubocop:disable RSpec/ExpectInHook
+    expect(@servers.map(&:port)).not_to include 80 # rubocop:disable RSpec/ExpectInHook
   end
 
   def bases
@@ -23,10 +23,8 @@ Capybara::SpecHelper.spec '#current_url, #current_path, #current_host' do
     expect(@session.current_url.chomp('?')).to eq("#{scheme}://#{s.host}:#{s.port}#{path}")
     expect(@session.current_host).to eq("#{scheme}://#{s.host}") # no port
     expect(@session.current_path).to eq(path)
-    if path == '/host'
-      # Server should agree with us
-      expect(@session).to have_content("Current host is #{scheme}://#{s.host}:#{s.port}")
-    end
+    # Server should agree with us
+    expect(@session).to have_content("Current host is #{scheme}://#{s.host}:#{s.port}") if path == '/host'
   end
 
   def visit_host_links

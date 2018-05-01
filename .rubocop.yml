@@ -112,9 +112,6 @@ Style/RedundantReturn:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-Style/ModuleFunction:
-  Enabled: false
-
 Style/NumericLiterals:
   Exclude:
     - 'lib/capybara/spec/**/*'
@@ -166,9 +163,6 @@ RSpec/NestedGroups:
 RSpec/DescribeClass:
   Enabled: false
 
-RSpec/MultipleDescribes:
-  Enabled: false
-
 RSpec/AnyInstance:
   Enabled: false
 
@@ -176,7 +170,4 @@ RSpec/FilePath:
   Enabled: false
 
 RSpec/PredicateMatcher:
-  Enabled: false
-
-RSpec/ExpectInHook:
   Enabled: false

@@ -167,9 +167,8 @@ module Capybara
 
       def assert_valid_keys
         super
-        unless VALID_MATCH.include?(match)
-          raise ArgumentError, "invalid option #{match.inspect} for :match, should be one of #{VALID_MATCH.map(&:inspect).join(', ')}"
-        end
+        return if VALID_MATCH.include?(match)
+        raise ArgumentError, "invalid option #{match.inspect} for :match, should be one of #{VALID_MATCH.map(&:inspect).join(', ')}"
       end
 
       def filtered_xpath(expr)

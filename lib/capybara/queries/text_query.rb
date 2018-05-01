@@ -68,9 +68,8 @@ module Capybara
       def case_insensitive_message
         insensitive_regexp = Capybara::Helpers.to_regexp(@expected_text, options: Regexp::IGNORECASE)
         insensitive_count = @actual_text.scan(insensitive_regexp).size
-        if insensitive_count != @count
-          "it was found #{insensitive_count} #{Capybara::Helpers.declension('time', 'times', insensitive_count)} using a case insensitive search"
-        end
+        return if insensitive_count == @count
+        "it was found #{insensitive_count} #{Capybara::Helpers.declension('time', 'times', insensitive_count)} using a case insensitive search"
       end
 
       def invisible_message

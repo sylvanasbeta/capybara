@@ -58,15 +58,15 @@ module Capybara
           end
 
           after do
-            @session.reset_session!
+            session.reset_session!
           end
 
           before :each, psc: true do
-            SpecHelper.reset_threadsafe(true, @session)
+            SpecHelper.reset_threadsafe(true, session)
           end
 
           after psc: true do
-            SpecHelper.reset_threadsafe(false, @session)
+            SpecHelper.reset_threadsafe(false, session)
           end
 
           before :each, :exact_false do
